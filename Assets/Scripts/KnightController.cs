@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(TouchingDirections), typeof(Damageable))]
-public class Knight : MonoBehaviour{
+public class KnightController : MonoBehaviour{
     public float walkAcceleration = 50f;
 
     public float maxSpeed = 3f;

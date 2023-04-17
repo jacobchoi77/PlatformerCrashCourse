@@ -39,19 +39,14 @@ public class PlayerController : MonoBehaviour{
 
     private float CurrentMoveSpeed{
         get{
-            if (CanMove){
-                if (IsMoving && !_touchingDirections.IsOnWall){
-                    if (_touchingDirections.IsGrounded){
-                        return IsRunning ? runSpeed : walkSpeed;
-                    }
-
-                    return airWalkSpeed;
-                }
-
-                return 0;
+            if (!CanMove) return 0;
+            if (!IsMoving || _touchingDirections.IsOnWall) return 0;
+            if (_touchingDirections.IsGrounded){
+                return IsRunning ? runSpeed : walkSpeed;
             }
 
-            return 0;
+            return airWalkSpeed;
+
         }
     }
 
@@ -98,14 +93,12 @@ public class PlayerController : MonoBehaviour{
         }
     }
 
-    private void SetFacingDirection(Vector2 moveInput){
-        if (moveInput.x > 0 && !IsFacingRight){
-            IsFacingRight = true;
-        }
-        else if (moveInput.x < 0 && IsFacingRight){
-            IsFacingRight = false;
-        }
-    }
+    private void SetFacingDirection(Vector2 moveInput) =>
+        IsFacingRight = moveInput.x switch{
+            > 0 when !IsFacingRight => true,
+            < 0 when IsFacingRight => false,
+            _ => IsFacingRight
+        };
 
 
     public void OnRun(InputAction.CallbackContext context){
@@ -118,10 +111,9 @@ public class PlayerController : MonoBehaviour{
     }
 
     public void OnJump(InputAction.CallbackContext context){
-        if (context.started && _touchingDirections.IsGrounded && CanMove){
-            _animator.SetTrigger(AnimationStrings.jumpTrigger);
-            _rb.velocity = new Vector2(_rb.velocity.x, jumpImpulse);
-        }
+        if (!context.started || !_touchingDirections.IsGrounded || !CanMove) return;
+        _animator.SetTrigger(AnimationStrings.jumpTrigger);
+        _rb.velocity = new Vector2(_rb.velocity.x, jumpImpulse);
     }
 
     public void OnAttack(InputAction.CallbackContext context){
@@ -129,7 +121,7 @@ public class PlayerController : MonoBehaviour{
             _animator.SetTrigger(AnimationStrings.attackTrigger);
         }
     }
-    
+
     public void OnRangedAttack(InputAction.CallbackContext context){
         if (context.started){
             _animator.SetTrigger(AnimationStrings.rangedAttackTrigger);

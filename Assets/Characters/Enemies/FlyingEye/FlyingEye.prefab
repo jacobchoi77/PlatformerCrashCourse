@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 996557043}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.116, y: -0.243, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.116, y: -0.144, z: 0}
+  m_LocalScale: {x: 1, y: 0.7625, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1813850320468159945}
@@ -105,7 +105,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 138786797729354931}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -138,7 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1532964699364069079}
   - component: {fileID: 8853620629895258735}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: DeathCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.32205772, y: -1.6871369}
+  m_Offset: {x: 0.29730678, y: -1.5545292}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -184,7 +184,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.72750473, y: 0.12244475}
+  m_Size: {x: 0.96401453, y: 0.112621784}
   m_EdgeRadius: 0
 --- !u!1 &3488449736918521601
 GameObject:
@@ -198,9 +198,9 @@ GameObject:
   - component: {fileID: 6925829504309085024}
   - component: {fileID: 6077100339313581135}
   - component: {fileID: 9100513083528186606}
-  - component: {fileID: 9022370548381139852}
   - component: {fileID: 6375707262703289609}
   - component: {fileID: 441923445432562017}
+  - component: {fileID: 9022370548381139852}
   m_Layer: 8
   m_Name: FlyingEye
   m_TagString: Untagged
@@ -315,41 +315,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.29738545, y: -0.21534777}
   m_Size: {x: 0.9046407, y: 1.2738104}
   m_Direction: 0
---- !u!114 &9022370548381139852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3488449736918521601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b436b7b699de9d04aafb87591eab4d8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageableHit:
-    m_PersistentCalls:
-      m_Calls: []
-  damageableDeath:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 441923445432562017}
-        m_TargetAssemblyTypeName: FlyingEye, Assembly-CSharp
-        m_MethodName: OnDeath
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  maxHealth: 50
-  health: 50
-  isAlive: 1
-  isInvincible: 0
-  invisibilityTimer: 0.25
 --- !u!95 &6375707262703289609
 Animator:
   serializedVersion: 4
@@ -392,3 +357,41 @@ MonoBehaviour:
   - {fileID: 0}
   deathCollider: {fileID: 8853620629895258735}
   hasTarget: 0
+--- !u!114 &9022370548381139852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3488449736918521601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b436b7b699de9d04aafb87591eab4d8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageableHit:
+    m_PersistentCalls:
+      m_Calls: []
+  damageableDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 441923445432562017}
+        m_TargetAssemblyTypeName: FlyingEye, Assembly-CSharp
+        m_MethodName: OnDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  healthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  isInvincible: 0
+  invisibilityTimer: 0.25
+  maxHealth: 50
+  health: 50
+  isAlive: 1

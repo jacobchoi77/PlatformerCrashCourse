@@ -3,9 +3,9 @@ using UnityEngine;
 namespace StateMachine{
     public class FadeRemoveBehaviour : StateMachineBehaviour{
         public float fadeTime = 0.5f;
-        public float fadeDelay = 0.0f;
-        private float _timeElapsed = 0f;
-        private float fadeDelayElapsed = 0f;
+        public float fadeDelay;
+        private float _timeElapsed;
+        private float _fadeDelayElapsed;
         private SpriteRenderer _spriteRenderer;
         private GameObject _objToRemove;
         private Color _startColor;
@@ -18,8 +18,8 @@ namespace StateMachine{
         }
 
         public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex){
-            if (fadeDelay > fadeDelayElapsed){
-                fadeDelayElapsed += Time.deltaTime;
+            if (fadeDelay > _fadeDelayElapsed){
+                _fadeDelayElapsed += Time.deltaTime;
             }
             else{
                 _timeElapsed += Time.deltaTime;

@@ -47,7 +47,7 @@ public class Damageable : MonoBehaviour{
             _animator.SetBool(AnimationStrings.isAlive, value);
             Debug.Log("IsAlive set  " + value);
             if (value == false){
-                damageableDeath.Invoke();
+                damageableDeath?.Invoke();
             }
         }
     }
