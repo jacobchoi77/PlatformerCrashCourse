@@ -1,4 +1,5 @@
 using System.Reflection;
+using Actions;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -14,23 +15,25 @@ public class UIManager : MonoBehaviour{
     }
 
     private void OnEnable(){
-        CharacterEvents.characterDamaged += CharacterTookDamage;
-        CharacterEvents.characterHealed += CharacterHealed;
+        CharacterActions.Damaged += CharacterTookDamage;
+        CharacterActions.Healed += CharacterHealed;
     }
 
     private void OnDisable(){
-        CharacterEvents.characterDamaged -= CharacterTookDamage;
-        CharacterEvents.characterHealed -= CharacterHealed;
+        CharacterActions.Damaged -= CharacterTookDamage;
+        CharacterActions.Healed -= CharacterHealed;
     }
 
-    public void CharacterTookDamage(GameObject character, int damageReceived){
+    private void CharacterTookDamage(GameObject character, int damageReceived){
+        if (Camera.main == null) return;
         var spawnPosition = Camera.main.WorldToScreenPoint(character.transform.position);
         var tmpText = Instantiate(damageTextPrefab, spawnPosition, Quaternion.identity, gameCanvas.transform)
             .GetComponent<TMP_Text>();
         tmpText.text = damageReceived.ToString();
     }
 
-    public void CharacterHealed(GameObject character, int healthRestored){
+    private void CharacterHealed(GameObject character, int healthRestored){
+        if (Camera.main == null) return;
         var spawnPosition = Camera.main.WorldToScreenPoint(character.transform.position);
         var tmpText = Instantiate(healthTextPrefab, spawnPosition, Quaternion.identity, gameCanvas.transform)
             .GetComponent<TMP_Text>();
@@ -38,19 +41,17 @@ public class UIManager : MonoBehaviour{
     }
 
     public void OnExit(InputAction.CallbackContext context){
+        if (!context.started) return;
         // @formatter:off
-        if (context.started){
-            #if(UNITY_EDITOR || DEVELOPMENT_BUILD)
-                Debug.Log(this.name + " : " + this.GetType() + " : " +
-                      MethodBase.GetCurrentMethod().Name);
-            #endif
-            #if(UNITY_EDITOR)
-                EditorApplication.isPlaying = false;
-            #elif(UNITY_STANDALONE)
-                Application.Quit();
-            #elif(UNITY_WEBGL)
-                SceneManager.LoadScene("QuitScene")
-            #endif
-        }
+        #if(UNITY_EDITOR || DEVELOPMENT_BUILD)
+            Debug.Log(name + " : " + GetType() + " : " +MethodBase.GetCurrentMethod()?.Name);
+        #endif
+        #if(UNITY_EDITOR)
+            EditorApplication.isPlaying = false;
+        #elif(UNITY_STANDALONE)
+            Application.Quit();
+        #elif(UNITY_WEBGL)
+            SceneManager.LoadScene("QuitScene")
+        #endif
     }
 }

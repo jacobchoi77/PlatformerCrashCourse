@@ -1,14 +1,16 @@
 using UnityEngine;
 
+[RequireComponent(typeof(CapsuleCollider2D), typeof(Animator))]
 public class TouchingDirections : MonoBehaviour{
     public ContactFilter2D castFilter;
+    public float groundDistance = 0.05f;
+    public float wallDistance = 0.2f;
+    public float ceilingDistance = 0.05f;
+
     private CapsuleCollider2D _touchingCol;
     private readonly RaycastHit2D[] _groundHits = new RaycastHit2D[5];
     private readonly RaycastHit2D[] _wallHits = new RaycastHit2D[5];
     private readonly RaycastHit2D[] _ceilingHits = new RaycastHit2D[5];
-    public float groundDistance = 0.05f;
-    public float wallDistance = 0.2f;
-    public float ceilingDistance = 0.05f;
     private Animator _animator;
 
     [SerializeField]
@@ -36,8 +38,6 @@ public class TouchingDirections : MonoBehaviour{
     [SerializeField]
     private bool isOnCeiling;
 
-    private Vector2 WallCheckDirection => gameObject.transform.localScale.x > 0 ? Vector2.right : Vector2.left;
-
     public bool IsOnCeiling{
         get => isOnCeiling;
         set{
@@ -45,6 +45,8 @@ public class TouchingDirections : MonoBehaviour{
             _animator.SetBool(AnimationStrings.isOnCeiling, value);
         }
     }
+
+    private Vector2 WallCheckDirection => gameObject.transform.localScale.x > 0 ? Vector2.right : Vector2.left;
 
     private void Awake(){
         _touchingCol = GetComponent<CapsuleCollider2D>();

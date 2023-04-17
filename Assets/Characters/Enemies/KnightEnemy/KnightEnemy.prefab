@@ -133,7 +133,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.44068944, y: -0.28202295}
+  m_Offset: {x: 0.3353349, y: -0.28202295}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -144,7 +144,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.506531, y: 1.6607056}
+  m_Size: {x: 3.295822, y: 1.6607056}
   m_EdgeRadius: 0
 --- !u!114 &4289480849776541595
 MonoBehaviour:
@@ -263,9 +263,9 @@ GameObject:
   - component: {fileID: 916937965055751680}
   - component: {fileID: 2134968436740159894}
   - component: {fileID: 8674386926148491026}
+  - component: {fileID: 3470769688087809291}
   - component: {fileID: 5517067444718715402}
   - component: {fileID: 8892485325370621539}
-  - component: {fileID: 3470769688087809291}
   - component: {fileID: 1668863484}
   m_Layer: 8
   m_Name: KnightEnemy
@@ -290,7 +290,7 @@ Transform:
   - {fileID: 4231250013047438884}
   - {fileID: 5381015099132186383}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &916937965055751680
 SpriteRenderer:
@@ -381,6 +381,26 @@ CapsuleCollider2D:
   m_Offset: {x: -0.08450517, y: 0.008622408}
   m_Size: {x: 0.76896745, y: 2.3440814}
   m_Direction: 0
+--- !u!95 &3470769688087809291
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8023542780678816524}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2314fcb88c368534ea4a7ac5d4debf02, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &5517067444718715402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,26 +451,6 @@ MonoBehaviour:
   isGrounded: 0
   isOnWall: 0
   isOnCeiling: 0
---- !u!95 &3470769688087809291
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8023542780678816524}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2314fcb88c368534ea4a7ac5d4debf02, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1668863484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,6 +478,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  damageableDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  healthChanged:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 100
   health: 100
   isAlive: 1

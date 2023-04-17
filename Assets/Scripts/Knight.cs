@@ -1,20 +1,18 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(TouchingDirections), typeof(Damageable))]
 public class Knight : MonoBehaviour{
-    [FormerlySerializedAs("walkSpeed")]
     public float walkAcceleration = 50f;
 
     public float maxSpeed = 3f;
     public float walkStopRate = 0.05f;
 
-    private Rigidbody2D rb;
+    private Rigidbody2D _rb;
     private TouchingDirections _touchingDirections;
     private Animator _animator;
     private Damageable _damageable;
 
-    public enum WalkableDirection{
+    private enum WalkableDirection{
         Right,
         Left
     }
@@ -22,23 +20,25 @@ public class Knight : MonoBehaviour{
     private WalkableDirection _walkDirection = WalkableDirection.Right;
     private Vector2 _walkDirectionVector = Vector2.right;
     public DetectionZone attackZone;
-    public DetectionZone cliffDetectionZone;
 
-    public WalkableDirection WalkDirection{
+    private WalkableDirection WalkDirection{
         get => _walkDirection;
         set{
             if (_walkDirection != value){
                 gameObject.transform.localScale = new Vector2(gameObject.transform.localScale.x * -1,
                     gameObject.transform.localScale.y);
-                _walkDirectionVector = value == WalkableDirection.Right ? Vector2.right :
-                    value == WalkableDirection.Left ? Vector2.left : _walkDirectionVector;
+                _walkDirectionVector = value switch{
+                    WalkableDirection.Right => Vector2.right,
+                    WalkableDirection.Left => Vector2.left,
+                    _ => _walkDirectionVector
+                };
             }
 
             _walkDirection = value;
         }
     }
 
-    public bool hasTarget = false;
+    public bool hasTarget;
 
     public bool HasTarget{
         get => hasTarget;
@@ -48,11 +48,11 @@ public class Knight : MonoBehaviour{
         }
     }
 
-    public bool CanMove => _animator.GetBool(AnimationStrings.canMove);
-    public bool IsAlive => _animator.GetBool(AnimationStrings.isAlive);
+    private bool CanMove => _animator.GetBool(AnimationStrings.canMove);
+    private bool IsAlive => _animator.GetBool(AnimationStrings.isAlive);
 
     private void Awake(){
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         _touchingDirections = GetComponent<TouchingDirections>();
         _animator = GetComponent<Animator>();
         _damageable = GetComponent<Damageable>();
@@ -65,7 +65,7 @@ public class Knight : MonoBehaviour{
         }
     }
 
-    public float AttackCooldown{
+    private float AttackCooldown{
         get => _animator.GetFloat(AnimationStrings.attackCooldown);
         set => _animator.SetFloat(AnimationStrings.attackCooldown, Mathf.Max(value, 0));
     }
@@ -76,27 +76,29 @@ public class Knight : MonoBehaviour{
         }
 
         if (IsAlive){
-            if (!_damageable.LockVelocity){
-                if (CanMove && _touchingDirections.IsGrounded)
-                    rb.velocity = new Vector2(
-                        Mathf.Clamp(rb.velocity.x + walkAcceleration * _walkDirectionVector.x * Time.fixedDeltaTime,
-                            -maxSpeed, maxSpeed), rb.velocity.y);
-                else
-                    rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x, 0, walkStopRate), rb.velocity.y);
-            }
+            if (_damageable.LockVelocity) return;
+            if (CanMove && _touchingDirections.IsGrounded)
+                _rb.velocity = new Vector2(
+                    Mathf.Clamp(_rb.velocity.x + walkAcceleration * _walkDirectionVector.x * Time.fixedDeltaTime,
+                        -maxSpeed, maxSpeed), _rb.velocity.y);
+            else
+                _rb.velocity = new Vector2(Mathf.Lerp(_rb.velocity.x, 0, walkStopRate), _rb.velocity.y);
         }
         else{
-            rb.velocity = Vector2.zero;
+            _rb.velocity = Vector2.zero;
         }
     }
 
     private void FlipDirection(){
-        WalkDirection = WalkDirection == WalkableDirection.Right ? WalkableDirection.Left :
-            WalkDirection == WalkableDirection.Left ? WalkableDirection.Right : WalkDirection;
+        WalkDirection = WalkDirection switch{
+            WalkableDirection.Right => WalkableDirection.Left,
+            WalkableDirection.Left => WalkableDirection.Right,
+            _ => WalkDirection
+        };
     }
 
     public void OnHit(int damage, Vector2 knockback){
-        rb.velocity = new Vector2(knockback.x, rb.velocity.y * knockback.y);
+        _rb.velocity = new Vector2(knockback.x, _rb.velocity.y * knockback.y);
     }
 
     public void OnCliffDetected(){
